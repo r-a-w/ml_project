@@ -1,0 +1,71 @@
+#include "data_containers.h" 
+#include "csv_read.h"
+#include <fstream>
+#include <iostream>
+
+
+template <class T>
+void mlglobal::readCSVFile(std::string file, DataContainers::LabeledData<T> & data_container, char delimiter, char comment, bool labellocation){
+  std::ifstream stream(file.c_str());
+  ML_EXCEPTION("Could not open file stream", stream);
+
+  /* read all file contents */
+  stream.seekg(0, std::ios::end);
+  size_t size = stream.tellg();
+  std::string file_contents(size, ' ');
+  stream.seekg(0, std::ios::beg);
+  stream.read(&file_contents[0], size);
+
+  /*close file*/
+  stream.close();
+
+
+  char eol='\n';
+  std::string label;
+  std::string::iterator it;
+  /* get label location and read in labels */
+  if(labellocation) it=file_contents.begin();
+  else{
+    it=file_contents.end()-2;
+    while(*it!=eol) --it;
+    ++it;
+  }
+
+  while(*it!=eol){
+    if(*it!='\"' and *it!=eol and *it!=delimiter) label.push_back(*it);
+    if(*it==delimiter or *it==eol){
+      data_container.appendLabel(label);
+      label.clear();
+    }
+    ++it;
+  }
+  data_container.appendLabel(label);
+  //data_container.printLabels();
+
+  /* parse contents and store in data container */
+  std::string datapoint;
+  if(!labellocation) it = file_contents.begin();
+  while(it!=file_contents.end()-1){
+    datapoint.clear();
+    while(*it==delimiter or *it==eol) ++it; // will skip double newlines or commas
+    while(*it!=delimiter and *it!=eol){
+      datapoint.push_back(*it);
+      ++it;
+    }
+    data_container.appendData(datapoint);
+  }
+
+
+} /* readCSVFile */
+
+
+/* 
+ * Explicit template instantiations
+ */
+template void mlglobal::readCSVFile<int>(std::string file, DataContainers::LabeledData<int> & data_container, char delimiter, char comment, bool labellocation);
+template void mlglobal::readCSVFile<float>(std::string file, DataContainers::LabeledData<float> & data_container, char delimiter, char comment, bool labellocation);
+template void mlglobal::readCSVFile<std::string>(std::string file, DataContainers::LabeledData<std::string> & data_container, char delimiter, char comment, bool labellocation);
+
+
+
+
