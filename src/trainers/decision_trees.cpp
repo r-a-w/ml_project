@@ -194,27 +194,24 @@ template <typename T>  mlglobal::Trainers::DecisionTree<T> mlglobal::TrainingFun
 
 }
 
-unsigned int test_integer=0;
+unsigned int test_index=0;
 
 /* implementation of the ID3 algorithm */
 template <typename T>  void _DecisionTree_Alg_ID3(mlglobal::Trainers::DecisionTree<T>& decision_tree, node<T> *current_node, mlglobal::DataContainers::LabeledData<T>& data_container, unsigned int target, vector<unsigned int> iattributes){
 
-  /*
-  DPRINT("test_integer");
-  DPRINT(test_integer);
-  */
-  test_integer++;
+  ++test_index;
+
 
   vector<T> target_data = data_container.getDataByIndex(target);
   vector<T> unique_target = uniqueValues(target_data);
 
   if(unique_target.size() == 1){
-    decision_tree.makeLeaf(current_node, target, unique_target.at(0));
+    decision_tree.addBranch(current_node, target, unique_target.at(0));
     return;
   }
 
   if(!iattributes.size()){
-    decision_tree.makeLeaf(current_node, target, mostCommonValue(target_data));
+    decision_tree.addBranch(current_node, target, mostCommonValue(target_data));
     return;
   }
 
@@ -238,6 +235,7 @@ template <typename T>  void _DecisionTree_Alg_ID3(mlglobal::Trainers::DecisionTr
   iattributes.erase(max_iter); // remove attribute
 
 
+
   using namespace mlglobal;
   /* branch tree based off of attribute */
   vector<T> unique_attribute = uniqueValues(max_attr_data);
@@ -249,6 +247,8 @@ template <typename T>  void _DecisionTree_Alg_ID3(mlglobal::Trainers::DecisionTr
     data_subset = data_container.getSubset(*it, max_index);
     _DecisionTree_Alg_ID3(decision_tree, next_node, data_subset, target, iattributes);
   }
+
+
 
   return;
 
@@ -262,8 +262,10 @@ template <typename T> void mlglobal::Trainers::DecisionTree<T>::printTree(node<T
 
   using namespace mlglobal::Trainers;
   if(current_node == NULL) current_node = root_node;
+  else std::cout << current_node->node_value << std::endl;
 
-  std::cout << current_node->node_value << std::endl;
+
+  if(!current_node->branch_nodes.size()) std::cout << "--LEAF--" << std::endl;
 
   typename std::vector<node<T>*>::iterator it;
   for(it = current_node->branch_nodes.begin(); it!=current_node->branch_nodes.end(); ++it){
