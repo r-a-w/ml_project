@@ -34,13 +34,20 @@ namespace mlglobal{
         node<T>* makeLeaf(node<T> *node_f, unsigned int column_index, T value);
         node<T>* findNode(unsigned int node_index, node<T> *current_node=NULL);
 
+        std::vector<T> predict(mlglobal::DataContainers::LabeledData<T> data_container);
+
         void printTree(node<T> *current_node=NULL);
+        void saveTree(std::string file_location= std::string());
+        std::vector<std::string> labels;
 
       private:
         node<T> *root_node;
         size_t n_nodes;
     };
 
+    /* loads specified saved decision tree, dummy variable used to distinguish template functions to allow for variable return type */
+    //template <typename T> DecisionTree<T> loadTree(std::string file_location, T dummy=NULL);
+    template <typename T> void loadTree(std::string file_location, DecisionTree<T> *decision_tree);
 
   } /* Trainers namespace */
 } /* mlglobal namespace */
@@ -52,8 +59,9 @@ namespace mlglobal{
      *
      * this is the one to be used by user
     */
-    
-    template <typename T>  mlglobal::Trainers::DecisionTree<T> DecisionTree_Alg_ID3(mlglobal::DataContainers::LabeledData<T> data_container, std::string target_attribute, std::vector<std::string> attributes = std::vector<std::string>());
+    template <typename T>  mlglobal::Trainers::DecisionTree<T> DecisionTree_Alg_ID3(mlglobal::DataContainers::LabeledData<T> data_container, std::string target_attribute);
+    template <typename T>  mlglobal::Trainers::DecisionTree<T> DecisionTree_Alg_ID3(mlglobal::DataContainers::LabeledData<T> data_container, std::string target_attribute, std::vector<std::string> attributes);
+    template <typename T>  mlglobal::Trainers::DecisionTree<T> DecisionTree_Alg_ID3(mlglobal::DataContainers::LabeledData<T> data_container, std::string target_attribute, std::vector<unsigned int> attributes);
   } /* TrainingFunctions namespace */
 } /* mlglobal namespace */
 

@@ -21,7 +21,7 @@ namespace DataContainers{
    *   appendLabel - adds new data label to container
    *   getDataByLabel - retireves all data associaated to label
    *   getDataByColumn - retrieve data based on column number (starts at 1!)
-   *   getDataByIndex - retrieve data based on index (starts at 0!)
+   *   getDataByIndex - retrieve data based on column index (starts at 0!)
    *   getSubset - retrieves data_container with subset of examples containing datapoint at column index
    *   getLabels - returns string vector of labels in container
    *   getIndexByLabel - return the data column index associated to the label
@@ -44,6 +44,7 @@ namespace DataContainers{
       void appendLabel(std::string addlabel);
       std::vector<T> getDataByLabel(std::string label);
       std::vector<T> getDataByColumn(size_t columnIndex);
+      std::vector<T> getDataByRow(size_t rowIndex);
       std::vector<T> getDataByIndex(size_t index);
       LabeledData<T> getSubset(T datapoint, size_t index);
       std::vector<std::string> getLabels();
