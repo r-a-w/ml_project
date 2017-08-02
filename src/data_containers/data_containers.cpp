@@ -136,6 +136,20 @@ template <typename T> std::vector<T> LabeledData<T>::getDataByColumn(size_t colu
 
 }
 
+
+template <typename T> std::vector<T> LabeledData<T>::getDataByRow(size_t rowIndex){
+  if(rowIndex > ndatapoints/ncolumns){
+    std::cout << "Cannot retrieve data, row index out of range, index = " << rowIndex << std::endl;
+    ML_EXCEPTION("index error", 0);
+  }
+  std::vector<T> row_data;
+  unsigned int i;
+  for(i = 0;i < ncolumns;++i) row_data.push_back(data.at(rowIndex*ncolumns+i));
+  return row_data;
+}
+
+
+
 template <typename T> std::vector<T> LabeledData<T>::getDataByIndex(size_t index){
   if(index > ncolumns-1){
     std::cout << "Cannot retrieve data, column index out of range, index = " << index << std::endl;
@@ -170,6 +184,7 @@ template size_t LabeledData<int>::numberOfRows(void);
 template size_t LabeledData<int>::numberOfColumns(void);
 template std::vector<int> LabeledData<int>::getDataByLabel(std::string label);
 template std::vector<int> LabeledData<int>::getDataByColumn(size_t columnIndex);
+template std::vector<int> LabeledData<int>::getDataByRow(size_t rowIndex);
 template std::vector<int> LabeledData<int>::getDataByIndex(size_t index);
 template LabeledData<int> LabeledData<int>::getSubset(int datapoint, size_t index);
 template std::vector<std::string> LabeledData<int>::getLabels();
@@ -184,6 +199,7 @@ template size_t LabeledData<float>::numberOfRows(void);
 template size_t LabeledData<float>::numberOfColumns(void);
 template std::vector<float> LabeledData<float>::getDataByLabel(std::string label);
 template std::vector<float> LabeledData<float>::getDataByColumn(size_t columnIndex);
+template std::vector<float> LabeledData<float>::getDataByRow(size_t rowIndex);
 template std::vector<float> LabeledData<float>::getDataByIndex(size_t index);
 template LabeledData<float> LabeledData<float>::getSubset(float datapoint, size_t index);
 template std::vector<std::string> LabeledData<float>::getLabels();
@@ -198,6 +214,7 @@ template size_t LabeledData<std::string>::numberOfRows(void);
 template size_t LabeledData<std::string>::numberOfColumns(void);
 template std::vector<std::string> LabeledData<std::string>::getDataByLabel(std::string label);
 template std::vector<std::string> LabeledData<std::string>::getDataByColumn(size_t columnIndex);
+template std::vector<std::string> LabeledData<std::string>::getDataByRow(size_t rowIndex);
 template std::vector<std::string> LabeledData<std::string>::getDataByIndex(size_t index);
 template LabeledData<std::string> LabeledData<std::string>::getSubset(std::string datapoint, size_t index);
 template std::vector<std::string> LabeledData<std::string>::getLabels();
