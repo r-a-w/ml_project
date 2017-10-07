@@ -11,7 +11,7 @@ INCLUDE_MODULES := #empty
 INCLUDE_BASE := $(PWD)/include/
 
 SRC_DIR := $(addprefix $(SRC_BASE), $(SRC_MODULES))
-BUILD_DIR := $(addprefix /Users/SMI2LE/Documents/ml_project/build/, $(SRC_MODULES))
+BUILD_DIR := $(addprefix $(PWD)/build/, $(SRC_MODULES))
 
 SRC:= $(foreach sdir, $(SRC_DIR), $(wildcard $(sdir)/*.cpp))
 INC := -I$(INCLUDE_BASE) $(addprefix -I$(INCLUDE_BASE), $(INCLUDE_MODULES))
