@@ -1,8 +1,0 @@
-# ignore all object files
-*.o
-
-#ignore datasets folder
-datasets/
-old/
-src/test/
-

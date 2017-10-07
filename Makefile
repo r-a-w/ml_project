@@ -1,13 +1,14 @@
 CC := g++
 LD := g++
 DEBUG := -g
-CFLAGS := -I/Users/SMI2LE/Documents/ml_project/include
+PWD := $(shell pwd)
+CFLAGS := -I$(PWD)/include
 DEPS := placeholder.h
 
-SRC_BASE := /Users/SMI2LE/Documents/ml_project/src/
+SRC_BASE := $(PWD)/src/
 SRC_MODULES := data_containers utilities trainers test
 INCLUDE_MODULES := #empty
-INCLUDE_BASE := /Users/SMI2LE/Documents/ml_project/include/
+INCLUDE_BASE := $(PWD)/include/
 
 SRC_DIR := $(addprefix $(SRC_BASE), $(SRC_MODULES))
 BUILD_DIR := $(addprefix /Users/SMI2LE/Documents/ml_project/build/, $(SRC_MODULES))
@@ -16,7 +17,6 @@ SRC:= $(foreach sdir, $(SRC_DIR), $(wildcard $(sdir)/*.cpp))
 INC := -I$(INCLUDE_BASE) $(addprefix -I$(INCLUDE_BASE), $(INCLUDE_MODULES))
 OBJ := $(subst src,build,$(SRC))
 OBJ := $(patsubst %.cpp,%.o,$(OBJ))
-#OBJ := /Users/SMI2LE/Documents/ml_project/build/utilities/csv_read.o /Users/SMI2LE/Documents/ml_project/build/test/test.o
 TARGET := test #build/test/test
 
 #$(info $(OBJ))
